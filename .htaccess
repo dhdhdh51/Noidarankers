@@ -1,0 +1,35 @@
+# ---------------------------------------------------------------------------
+# NoidaRankers - project-root .htaccess (fallback mode)
+#
+# Best setup: point your domain's document root at the /public folder.
+# If your host does not allow that (e.g. the files must live in public_html),
+# upload the whole project and this file sends every request into /public
+# while keeping application files private.
+# ---------------------------------------------------------------------------
+
+Options -Indexes
+DirectoryIndex public/index.php
+
+# Never serve configuration, SQL dumps or documentation directly.
+<FilesMatch "^(config\.php|config\.sample\.php|database\.sql|README\.md|\.gitignore)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block application folders and hidden files/folders.
+    RewriteRule ^(app|storage|cron|\.git|\.kiro)(/|$) - [F,L]
+
+    # Route everything into /public (links containing /public/ are
+    # redirected to the clean URL by the application).
+    RewriteRule ^$ public/ [L]
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

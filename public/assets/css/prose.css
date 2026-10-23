@@ -1,0 +1,23 @@
+/* Long-form content: blog posts, service pages, legal pages. */
+.prose { max-width: 72ch; font-size: 1.075rem; }
+.prose > :first-child { margin-top: 0; }
+.prose h2 { margin: 2.2em 0 .6em; font-size: clamp(1.45rem, 2.6vw, 1.85rem); }
+.prose h3 { margin: 1.8em 0 .5em; font-size: 1.25rem; }
+.prose h4 { margin: 1.5em 0 .5em; font-size: 1.1rem; }
+.prose ul, .prose ol { padding-left: 1.3em; }
+.prose li { margin: .4em 0; }
+.prose li::marker { color: var(--accent); }
+.prose img { border-radius: var(--r-sm); margin: 1.5em 0; }
+.prose figure { margin: 1.5em 0; }
+.prose figcaption { font-size: .95rem; color: var(--muted); margin-top: .5rem; }
+.prose blockquote { margin: 1.5em 0; padding: .25em 0 .25em 1.25em; border-left: 4px solid var(--accent); color: var(--muted); }
+.prose code { padding: .12em .4em; border-radius: 6px; background: var(--slate); font-size: .9em; }
+.prose pre { overflow-x: auto; padding: 1rem; border-radius: 14px; background: var(--slate); }
+.prose table { width: 100%; border-collapse: collapse; margin: 1.5em 0; font-size: .98rem; }
+.prose th, .prose td { padding: .6rem .75rem; border-bottom: 1px solid var(--line); text-align: left; }
+.prose hr { margin: 2.5em 0; border: 0; border-top: 1px solid var(--line); }
+.post-header { max-width: 860px; }
+.post-meta { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; color: var(--muted); font-size: .98rem; }
+.post-figure { margin: 2rem 0 0; }
+.post-figure img { width: 100%; border-radius: var(--r-lg); }
+.post-cta { margin: 3rem 0 0; }
