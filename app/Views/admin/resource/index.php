@@ -32,8 +32,8 @@ $columns = $resource->listColumns();
       <tbody>
         <?php foreach ($rows as $row): ?>
         <tr>
-          <?php $first = true; foreach (array_keys($columns) as $column): ?>
-          <td><?php if ($first): ?><a href="<?= e(url($base . '/' . $row['id'] . '/edit')) ?>"><?= $resource->cell($column, $row) ?></a><?php else: ?><?= $resource->cell($column, $row) ?><?php endif; $first = false; ?></td>
+          <?php $first = true; foreach ($columns as $column => $heading): ?>
+          <td data-label="<?= e($heading) ?>"><?php if ($first): ?><a href="<?= e(url($base . '/' . $row['id'] . '/edit')) ?>"><?= $resource->cell($column, $row) ?></a><?php else: ?><?= $resource->cell($column, $row) ?><?php endif; $first = false; ?></td>
           <?php endforeach; ?>
           <td class="actions">
             <?php $view = $resource->viewUrl($row); if ($view !== null): ?>

@@ -27,10 +27,10 @@ $todo = array_filter($checklist, static fn (array $c): bool => !$c[1]);
         <tbody>
           <?php foreach ($recent as $lead): ?>
           <tr>
-            <td><a href="<?= e(url('/admin/leads/' . $lead['id'])) ?>"><?= e($lead['name']) ?></a><?= $lead['is_sample'] ? ' <span class="badge badge-amber">SAMPLE</span>' : '' ?></td>
-            <td><?= e(Lead::TYPES[$lead['type']] ?? $lead['type']) ?></td>
-            <td><span class="badge status-<?= e($lead['status']) ?>"><?= e(Lead::STATUSES[$lead['status']] ?? $lead['status']) ?></span></td>
-            <td><?= e(format_date((string) $lead['created_at'], 'j M Y, H:i')) ?></td>
+            <td data-label="Name"><a href="<?= e(url('/admin/leads/' . $lead['id'])) ?>"><?= e($lead['name']) ?></a><?= $lead['is_sample'] ? ' <span class="badge badge-amber">SAMPLE</span>' : '' ?></td>
+            <td data-label="Type"><?= e(Lead::TYPES[$lead['type']] ?? $lead['type']) ?></td>
+            <td data-label="Status"><span class="badge status-<?= e($lead['status']) ?>"><?= e(Lead::STATUSES[$lead['status']] ?? $lead['status']) ?></span></td>
+            <td data-label="Received"><?= e(format_date((string) $lead['created_at'], 'j M Y, H:i')) ?></td>
           </tr>
           <?php endforeach; ?>
         </tbody>

@@ -18,10 +18,10 @@ use App\Core\View;
       <tbody>
       <?php foreach ($subscribers as $s): ?>
         <tr>
-          <td><?= e($s['email']) ?></td>
-          <td><span class="badge <?= $s['status'] === 'subscribed' ? 'badge-green' : 'badge-slate' ?>"><?= e(ucfirst((string) $s['status'])) ?></span></td>
-          <td><?= e(format_date((string) $s['created_at'], 'j M Y, H:i')) ?></td>
-          <td><?= e($s['source_page']) ?></td>
+          <td data-label="Email"><?= e($s['email']) ?></td>
+          <td data-label="Status"><span class="badge <?= $s['status'] === 'subscribed' ? 'badge-green' : 'badge-slate' ?>"><?= e(ucfirst((string) $s['status'])) ?></span></td>
+          <td data-label="Subscribed"><?= e(format_date((string) $s['created_at'], 'j M Y, H:i')) ?></td>
+          <td data-label="From page"><?= e($s['source_page']) ?></td>
           <td class="actions">
             <form method="post" action="<?= e(url('/admin/subscribers/' . $s['id'] . '/delete')) ?>" data-confirm="Remove this subscriber?">
               <?= csrf_field() ?><button class="link-button danger" type="submit">Delete</button>

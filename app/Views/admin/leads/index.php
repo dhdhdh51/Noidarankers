@@ -38,12 +38,12 @@ $query = static fn (array $extra = []): string => http_build_query(array_filter(
       <tbody>
       <?php foreach ($leads as $lead): ?>
         <tr>
-          <td><a href="<?= e(url('/admin/leads/' . $lead['id'])) ?>"><?= e($lead['name']) ?></a><?= $lead['is_sample'] ? ' <span class="badge badge-amber">SAMPLE</span>' : '' ?></td>
-          <td><?= e($lead['phone']) ?><br><span class="muted"><?= e($lead['email']) ?></span></td>
-          <td><?= e($lead['business_type']) ?><?php if ($lead['website'] !== ''): ?><br><span class="muted"><?= e(preg_replace('#^https?://#', '', (string) $lead['website'])) ?></span><?php endif; ?></td>
-          <td><?= e(Lead::TYPES[$lead['type']] ?? $lead['type']) ?></td>
-          <td><span class="badge status-<?= e($lead['status']) ?>"><?= e(Lead::STATUSES[$lead['status']] ?? $lead['status']) ?></span></td>
-          <td><?= e(format_date((string) $lead['created_at'], 'j M Y, H:i')) ?></td>
+          <td data-label="Name"><a href="<?= e(url('/admin/leads/' . $lead['id'])) ?>"><?= e($lead['name']) ?></a><?= $lead['is_sample'] ? ' <span class="badge badge-amber">SAMPLE</span>' : '' ?></td>
+          <td data-label="Contact"><?= e($lead['phone']) ?><br><span class="muted"><?= e($lead['email']) ?></span></td>
+          <td data-label="Business"><?= e($lead['business_type']) ?><?php if ($lead['website'] !== ''): ?><br><span class="muted"><?= e(preg_replace('#^https?://#', '', (string) $lead['website'])) ?></span><?php endif; ?></td>
+          <td data-label="Form"><?= e(Lead::TYPES[$lead['type']] ?? $lead['type']) ?></td>
+          <td data-label="Status"><span class="badge status-<?= e($lead['status']) ?>"><?= e(Lead::STATUSES[$lead['status']] ?? $lead['status']) ?></span></td>
+          <td data-label="Received"><?= e(format_date((string) $lead['created_at'], 'j M Y, H:i')) ?></td>
         </tr>
       <?php endforeach; ?>
       </tbody>

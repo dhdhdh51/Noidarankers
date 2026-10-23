@@ -38,9 +38,15 @@ $error = flash_message('error');
 </head>
 <body class="admin">
 <a class="skip-link" href="#main">Skip to content</a>
+<header class="admin-topbar">
+  <button class="admin-burger" type="button" aria-label="Open menu" aria-controls="admin-side" aria-expanded="false"><?= icon('menu') ?></button>
+  <a class="logo" href="<?= e(url('/admin')) ?>"><?= View::partial('partials/logo') ?></a>
+  <?php if ($newLeads > 0): ?><a class="topbar-leads" href="<?= e(url('/admin/leads?status=new')) ?>" aria-label="<?= (int) $newLeads ?> new leads"><?= icon('phone') ?><span class="count"><?= (int) $newLeads ?></span></a><?php endif; ?>
+</header>
 <div class="admin-shell">
-  <aside class="admin-side">
-    <a class="logo" href="<?= e(url('/admin')) ?>"><?= View::partial('partials/logo') ?></a>
+  <div class="admin-overlay" hidden></div>
+  <aside class="admin-side" id="admin-side">
+    <a class="logo side-logo" href="<?= e(url('/admin')) ?>"><?= View::partial('partials/logo') ?></a>
     <nav aria-label="Admin">
       <ul class="admin-menu">
         <?php foreach ($nav as $href => [$label, $iconName]):

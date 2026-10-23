@@ -5,6 +5,23 @@
   var each = function (selector, fn, root) { Array.prototype.forEach.call((root || d).querySelectorAll(selector), fn); };
   var meta = function (name) { var m = d.querySelector('meta[name="' + name + '"]'); return m ? m.getAttribute('content') : ''; };
 
+  // Mobile sidebar drawer (off-canvas)
+  var burger = d.querySelector('.admin-burger');
+  var side = d.getElementById('admin-side');
+  var overlay = d.querySelector('.admin-overlay');
+  if (burger && side) {
+    var setDrawer = function (open) {
+      side.classList.toggle('open', open);
+      if (overlay) { overlay.hidden = !open; }
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      d.body.classList.toggle('drawer-open', open);
+    };
+    burger.addEventListener('click', function () { setDrawer(!side.classList.contains('open')); });
+    if (overlay) { overlay.addEventListener('click', function () { setDrawer(false); }); }
+    d.addEventListener('keydown', function (e) { if (e.key === 'Escape') { setDrawer(false); } });
+    each('a', function (a) { a.addEventListener('click', function () { setDrawer(false); }); }, side);
+  }
+
   // Confirm before destructive actions
   each('form[data-confirm]', function (form) {
     form.addEventListener('submit', function (e) {
