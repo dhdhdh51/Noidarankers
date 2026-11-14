@@ -7,6 +7,7 @@ $path = Request::path();
 $nav = [
     '/admin' => ['Dashboard', 'chart'],
     '/admin/leads' => ['Leads', 'phone'],
+    '/admin/lead-finder' => ['Lead Finder', 'map-pin'],
     '/admin/posts' => ['Blog posts', 'pen'],
     '/admin/ai' => ['AI Writer', 'spark'],
     '/admin/categories' => ['Categories', 'clipboard'],

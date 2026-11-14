@@ -59,6 +59,9 @@ final class Settings
             'ai_image_key' => '',
             'ai_image_model' => 'gpt-image-1',
             'ai_image_size' => '1024x1024',
+            // Lead Finder (Google Places API, configured in Admin > Lead Finder). Key stored encrypted.
+            'maps_enabled' => '0',
+            'maps_api_key' => '',
         ];
     }
 

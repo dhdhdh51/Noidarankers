@@ -87,6 +87,29 @@ CREATE TABLE IF NOT EXISTS `lead_notes` (
   CONSTRAINT `fk_lead_notes_lead` FOREIGN KEY (`lead_id`) REFERENCES `leads` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Lead Finder prospects (businesses pulled from Google Maps via the Places API).
+CREATE TABLE IF NOT EXISTS `map_leads` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `place_id` VARCHAR(255) NOT NULL DEFAULT '',
+  `name` VARCHAR(190) NOT NULL,
+  `category` VARCHAR(120) NOT NULL DEFAULT '',
+  `phone` VARCHAR(40) NOT NULL DEFAULT '',
+  `website` VARCHAR(255) NOT NULL DEFAULT '',
+  `address` VARCHAR(400) NOT NULL DEFAULT '',
+  `rating` DECIMAL(2,1) NULL DEFAULT NULL,
+  `reviews` INT UNSIGNED NOT NULL DEFAULT 0,
+  `maps_url` VARCHAR(400) NOT NULL DEFAULT '',
+  `status` ENUM('new','contacted','won','lost') NOT NULL DEFAULT 'new',
+  `search_query` VARCHAR(255) NOT NULL DEFAULT '',
+  `notes` TEXT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_map_leads_place` (`place_id`),
+  KEY `idx_map_leads_status` (`status`, `created_at`),
+  KEY `idx_map_leads_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `subscribers` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(190) NOT NULL,

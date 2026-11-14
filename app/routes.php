@@ -86,6 +86,16 @@ return static function (Router $r): void {
     $r->post('/admin/ai/test', [Admin\AiController::class, 'test'], $admin);
     $r->post('/admin/ai/models', [Admin\AiController::class, 'models'], $admin);
 
+    // Admin: Lead Finder (Google Maps / Places API)
+    $r->get('/admin/lead-finder', [Admin\LeadFinderController::class, 'index'], $admin);
+    $r->post('/admin/lead-finder/search', [Admin\LeadFinderController::class, 'search'], $admin);
+    $r->get('/admin/lead-finder/settings', [Admin\LeadFinderController::class, 'settings'], $admin);
+    $r->post('/admin/lead-finder/settings', [Admin\LeadFinderController::class, 'saveSettings'], $admin);
+    $r->post('/admin/lead-finder/test', [Admin\LeadFinderController::class, 'test'], $admin);
+    $r->get('/admin/lead-finder/export', [Admin\LeadFinderController::class, 'export'], $admin);
+    $r->post('/admin/lead-finder/{id}/status', [Admin\LeadFinderController::class, 'status'], $admin);
+    $r->post('/admin/lead-finder/{id}/delete', [Admin\LeadFinderController::class, 'destroy'], $admin);
+
     // Admin: content managers (shared CRUD routes)
     $resources = [
         'posts' => Admin\PostsController::class,
