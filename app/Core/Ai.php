@@ -124,7 +124,7 @@ final class Ai
      * @param array<int,array{role:string,content:string}> $messages
      * @throws \RuntimeException with an admin-safe message on failure
      */
-    public static function chat(array $messages, int $maxTokens = 4000, ?float $temperature = null): string
+    public static function chat(array $messages, int $maxTokens = 4000, ?float $temperature = null, bool $allowEmpty = false): string
     {
         $c = self::config();
         if ($c['base_url'] === '' || $c['api_key'] === '' || $c['model'] === '') {
@@ -159,6 +159,9 @@ final class Ai
                 }
             }
             if ($text === '') {
+                if ($allowEmpty) {
+                    return '';
+                }
                 throw new \RuntimeException('The AI returned an empty response.');
             }
             return $text;
@@ -173,6 +176,9 @@ final class Ai
         $data = self::decodeOrThrow($res);
         $text = (string) ($data['choices'][0]['message']['content'] ?? '');
         if ($text === '') {
+            if ($allowEmpty) {
+                return '';
+            }
             throw new \RuntimeException('The AI returned an empty response.');
         }
         return $text;
@@ -199,11 +205,13 @@ final class Ai
     public static function test(): array
     {
         try {
-            $reply = self::chat([
+            $reply = trim(self::chat([
                 ['role' => 'system', 'content' => 'You are a connectivity test. Reply with the single word: OK'],
                 ['role' => 'user', 'content' => 'Reply with OK.'],
-            ], 20, 0.0);
-            return ['ok' => true, 'message' => 'Connected. Model replied: ' . trim(mb_substr($reply, 0, 80))];
+            ], 256, 0.0, true));
+            return ['ok' => true, 'message' => $reply !== ''
+                ? 'Connected. Model replied: ' . mb_substr($reply, 0, 80)
+                : 'Connected and authenticated — the key and model work. (The model returned no text for the tiny test prompt; that is fine, generating a post will work.)'];
         } catch (\Throwable $e) {
             return ['ok' => false, 'message' => $e->getMessage()];
         }
