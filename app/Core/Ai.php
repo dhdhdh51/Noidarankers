@@ -15,11 +15,20 @@ namespace App\Core;
  */
 final class Ai
 {
+    /** Unsaved overrides for the current request (Test / Load models). @var array<string,mixed>|null */
+    private static ?array $override = null;
+
+    /** Apply config values not yet saved (used by Test and Load models). @param array<string,mixed> $override */
+    public static function useRuntimeConfig(array $override): void
+    {
+        self::$override = $override;
+    }
+
     /** Current configuration, with secrets decrypted. @return array<string,mixed> */
     public static function config(): array
     {
         $apiKey = Crypto::decrypt(setting('ai_api_key'));
-        return [
+        $cfg = [
             'enabled' => setting('ai_enabled') === '1',
             'base_url' => rtrim(setting('ai_base_url'), '/'),
             'format' => setting('ai_format') === 'anthropic' ? 'anthropic' : 'openai',
@@ -32,6 +41,14 @@ final class Ai
             'image_model' => trim(setting('ai_image_model') !== '' ? setting('ai_image_model') : 'gpt-image-1'),
             'image_size' => setting('ai_image_size') !== '' ? setting('ai_image_size') : '1024x1024',
         ];
+        if (self::$override !== null) {
+            foreach (self::$override as $k => $v) {
+                if ($v !== null && $v !== '') {
+                    $cfg[$k] = $v;
+                }
+            }
+        }
+        return $cfg;
     }
 
     public static function configured(): bool

@@ -149,12 +149,43 @@ final class AiController extends AdminController
     public function test(): string
     {
         header('Content-Type: application/json');
+        $this->applyRuntimeConfig();
         return (string) json_encode(Ai::test());
     }
 
     public function models(): string
     {
         header('Content-Type: application/json');
+        $this->applyRuntimeConfig();
         return (string) json_encode(['models' => Ai::models()]);
+    }
+
+    /**
+     * Let "Test connection" and "Load models" use the values currently typed in
+     * the form (before Save), so first-time setup works in one go. Blank fields
+     * fall back to whatever is already saved.
+     */
+    private function applyRuntimeConfig(): void
+    {
+        $override = [];
+        $base = rtrim(Request::input('ai_base_url'), '/');
+        if ($base !== '') {
+            $override['base_url'] = $base;
+        }
+        $model = trim(Request::input('ai_model'));
+        if ($model !== '') {
+            $override['model'] = $model;
+        }
+        $format = Request::input('ai_format');
+        if ($format !== '') {
+            $override['format'] = $format === 'anthropic' ? 'anthropic' : 'openai';
+        }
+        $key = trim(Request::raw('ai_api_key'));
+        if ($key !== '') {
+            $override['api_key'] = $key;
+        }
+        if ($override !== []) {
+            Ai::useRuntimeConfig($override);
+        }
     }
 }
