@@ -1,0 +1,20 @@
+# Local configuration (contains credentials)
+/config.php
+
+# Runtime data
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/sessions/*
+!/storage/sessions/.gitkeep
+
+# Uploaded files (keep the folder and its protection rules)
+/public/uploads/*
+!/public/uploads/.htaccess
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

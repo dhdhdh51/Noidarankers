@@ -1,0 +1,47 @@
+# Tasks: NoidaRankers website
+
+- [x] 1. Project skeleton and configuration
+  - [x] 1.1 Folder structure, `.gitignore`, root and `public/` `.htaccess`, deny files for `app/`, `storage/`, `cron/` (R1.6, R7.6, R8.6)
+  - [x] 1.2 `config.sample.php` with placeholders; `bootstrap.php` with autoloader, error handling and a missing-config page (R1.3, R1.5)
+  - [x] 1.3 Core: Request, Router, View, App (redirects, middleware, error pages) (R1.1, R6.2)
+- [x] 2. Data layer
+  - [x] 2.1 `database.sql` schema for all tables (R1.4)
+  - [x] 2.2 Seed data: settings, 6 services with content and FAQs, 3 plans, categories, SAMPLE testimonials, case studies, posts and lead (R3, R9)
+  - [x] 2.3 Database (PDO), Settings, and model classes (R1.2, R5.8)
+- [x] 3. Security and utility core
+  - [x] 3.1 Session, Csrf, Security headers with CSP nonce (R8.2, R8.3, R8.5)
+  - [x] 3.2 Validator, RateLimiter, spam timer and honeypot helpers (R4.2)
+  - [x] 3.3 Mailer (mail and SMTP) (R4.4, R4.5)
+  - [x] 3.4 HtmlSanitizer, ImageProcessor (WebP and variants), Paginator, Csv, Str (R7.5, R8.1, R8.4)
+  - [x] 3.5 Seo builder and JSON-LD graph (R6.1, R6.4)
+- [x] 4. Front end
+  - [x] 4.1 CSS design system (tokens, layout, Bento, components, prose), inline CSS pipeline (R2, R7.3)
+  - [x] 4.2 Layout, header, footer (newsletter), breadcrumbs, floating WhatsApp and call buttons, `site.js` (R2.5, R4.6, R4.7)
+  - [x] 4.3 Icons, favicon, apple-touch and manifest icons, default OG image (R6.1)
+- [x] 5. Public pages
+  - [x] 5.1 Home (R3.1)
+  - [x] 5.2 Services index and detail pages with FAQ, Service and FAQPage schema (R3.2, R6.4)
+  - [x] 5.3 Pricing (R3.3)
+  - [x] 5.4 Results list and detail (R3.4)
+  - [x] 5.5 Blog index, pagination, category filter, post page, related posts (R3.5)
+  - [x] 5.6 About, Contact, Free SEO Audit, Thank-you, Privacy, Terms, 404 and 500 pages (R3.6)
+  - [x] 5.7 Lead and subscribe controllers (R4)
+  - [x] 5.8 `sitemap.xml` and `robots.txt` (R6.3)
+- [x] 6. Admin panel
+  - [x] 6.1 Auth: setup with environment check, login, lockout, logout, session timeout, account password change (R5.1–R5.3)
+  - [x] 6.2 Admin layout, dashboard counts, launch checklist, delete-all-sample-content (R5.4, R9.4)
+  - [x] 6.3 Leads manager: list, search, filter, detail, status, notes, delete, CSV export (R5.5)
+  - [x] 6.4 ResourceController with generic list and form views (R5.6, R5.7)
+  - [x] 6.5 Posts (editor, image upload, inline image endpoint), categories, services (FAQ repeater), plans, testimonials, case studies (R5.6, R5.7)
+  - [x] 6.6 Subscribers (list, delete, export) and Settings (R5.7, R5.8)
+  - [x] 6.7 `admin.js`: editor, slug autogeneration, SEO character counters, confirm dialogs, FAQ rows
+- [x] 7. Operations and docs
+  - [x] 7.1 `cron/maintenance.php` (R10.1)
+  - [x] 7.2 README with deployment steps (R10.1)
+- [x] 8. Verification (R10.2)
+  - [x] 8.1 PHP lint (8.2 and 8.4); SQL import and re-import
+  - [x] 8.2 E2E: pages, SEO tags, JSON-LD, redirects, 404
+  - [x] 8.3 E2E: contact and audit forms, spam controls, rate limits, email, subscribe
+  - [x] 8.4 E2E: admin setup, lockout, CRUD, uploads and WebP, CSV, settings, logout
+  - [x] 8.5 Sitemap and robots, headers, compression, caching, upload execution block, fallback document root mode
+  - [x] 8.6 Lighthouse mobile 95+ in all categories, homepage under 200 KB, visual check

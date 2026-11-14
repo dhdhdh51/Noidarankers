@@ -1,0 +1,82 @@
+# ---------------------------------------------------------------------------
+# NoidaRankers - public/.htaccess
+# Clean URLs, compression, browser caching and security headers.
+# Works on Apache 2.4 and LiteSpeed. Unsupported modules are skipped safely.
+# ---------------------------------------------------------------------------
+
+Options -Indexes -MultiViews
+DirectoryIndex index.php
+AddDefaultCharset UTF-8
+
+<IfModule mod_mime.c>
+    AddType image/webp .webp
+    AddType image/svg+xml .svg
+    AddType application/manifest+json .webmanifest
+    AddType image/x-icon .ico
+    AddType text/javascript .js
+    AddCharset UTF-8 .css .js .svg .webmanifest .txt .xml
+</IfModule>
+
+# --- Clean URLs: every non-file request goes to the front controller --------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # If the site lives in a sub-folder, set it here, e.g. RewriteBase /seo/
+    # RewriteBase /
+
+    # Optional: force HTTPS at server level (the PHP app also does this
+    # when 'force_https' is true in config.php). Uncomment once SSL works.
+    # RewriteCond %{HTTPS} !=on
+    # RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L,NE]
+
+    # Block hidden files and folders (except /.well-known for SSL checks).
+    RewriteRule (^|/)\.(?!well-known/) - [F,L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L,QSA]
+</IfModule>
+
+# --- Compression: brotli when available, gzip otherwise ---------------------
+<IfModule mod_brotli.c>
+    <IfModule mod_deflate.c>
+        AddOutputFilterByType BROTLI_COMPRESS;DEFLATE text/html text/plain text/css text/xml text/javascript application/javascript application/json application/xml application/rss+xml application/manifest+json image/svg+xml image/x-icon
+    </IfModule>
+    <IfModule !mod_deflate.c>
+        AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/xml text/javascript application/javascript application/json application/xml application/rss+xml application/manifest+json image/svg+xml image/x-icon
+    </IfModule>
+</IfModule>
+<IfModule !mod_brotli.c>
+    <IfModule mod_deflate.c>
+        AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml text/javascript application/javascript application/json application/xml application/rss+xml application/manifest+json image/svg+xml image/x-icon
+    </IfModule>
+</IfModule>
+
+# --- Browser caching ---------------------------------------------------------
+# Pages, sitemap.xml, robots.txt and CSV exports set their own Cache-Control
+# in PHP. Static files are versioned with ?v=<timestamp> or have unique names,
+# so they are cached for a year (see assets/.htaccess and uploads/.htaccess).
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType application/manifest+json "access plus 1 week"
+    ExpiresByType image/x-icon "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+</IfModule>
+
+# --- Security headers (CSP and HSTS are sent by PHP) -------------------------
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+    Header always unset X-Powered-By
+    Header unset X-Powered-By
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# --- Custom error page for files Apache itself refuses -----------------------
+ErrorDocument 403 /index.php
