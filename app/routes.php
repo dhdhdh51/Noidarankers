@@ -78,6 +78,14 @@ return static function (Router $r): void {
     $r->get('/admin/settings', [Admin\SettingsController::class, 'edit'], $admin);
     $r->post('/admin/settings', [Admin\SettingsController::class, 'update'], $admin);
 
+    // Admin: AI blog writer
+    $r->get('/admin/ai', [Admin\AiController::class, 'form'], $admin);
+    $r->post('/admin/ai/generate', [Admin\AiController::class, 'generate'], $admin);
+    $r->get('/admin/ai/settings', [Admin\AiController::class, 'settings'], $admin);
+    $r->post('/admin/ai/settings', [Admin\AiController::class, 'saveSettings'], $admin);
+    $r->post('/admin/ai/test', [Admin\AiController::class, 'test'], $admin);
+    $r->post('/admin/ai/models', [Admin\AiController::class, 'models'], $admin);
+
     // Admin: content managers (shared CRUD routes)
     $resources = [
         'posts' => Admin\PostsController::class,

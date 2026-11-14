@@ -47,6 +47,18 @@ final class Settings
             'stat4_value' => '[X]',
             'stat4_label' => 'Businesses in Noida and NCR we have worked with',
             'policies_updated' => '2026-10-23',
+            // AI blog writer (configured in Admin > AI Writer). Keys are stored encrypted.
+            'ai_enabled' => '0',
+            'ai_base_url' => '',
+            'ai_format' => 'openai',
+            'ai_api_key' => '',
+            'ai_model' => '',
+            'ai_temperature' => '0.7',
+            'ai_image_enabled' => '0',
+            'ai_image_base_url' => '',
+            'ai_image_key' => '',
+            'ai_image_model' => 'gpt-image-1',
+            'ai_image_size' => '1024x1024',
         ];
     }
 
