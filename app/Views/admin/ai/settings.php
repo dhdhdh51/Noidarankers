@@ -19,7 +19,7 @@ $sizes = ['1024x1024' => '1024×1024 (square)', '1536x1024' => '1536×1024 (land
       <div class="field">
         <label for="f-url">API base link</label>
         <input id="f-url" name="ai_base_url" type="url" value="<?= e((string) $c['base_url']) ?>" placeholder="https://api.openai.com/v1" inputmode="url" autocomplete="off">
-        <p class="hint">OpenAI: <code>https://api.openai.com/v1</code> · OpenRouter: <code>https://openrouter.ai/api/v1</code> · Anthropic: <code>https://api.anthropic.com</code></p>
+        <p class="hint">OpenAI: <code>https://api.openai.com/v1</code> · OpenRouter: <code>https://openrouter.ai/api/v1</code> · Anthropic: <code>https://api.anthropic.com</code><br>You can paste the base URL or the full endpoint — the path is sorted out for you.</p>
       </div>
       <div class="field">
         <label for="f-format">API format</label>

@@ -79,6 +79,30 @@ final class Ai
     }
 
     /**
+     * Build the full API endpoint from the configured base URL, tolerating
+     * however the user pasted it (base, base+/v1, or the full endpoint path).
+     * This avoids the classic "/v1/v1/messages" double-path mistake.
+     *
+     * @param string $kind 'chat' or 'models'
+     */
+    private static function endpoint(string $base, string $format, string $kind): string
+    {
+        $base = rtrim(trim($base), '/');
+        if ($format === 'anthropic') {
+            // Strip a pasted /v1/messages, /messages, or trailing /v1 so we can re-add cleanly.
+            $base = (string) preg_replace('#/(v1/)?messages$#i', '', $base);
+            $base = rtrim($base, '/');
+            $base = (string) preg_replace('#/v1$#i', '', $base);
+            $base = rtrim($base, '/');
+            return $base . ($kind === 'models' ? '/v1/models' : '/v1/messages');
+        }
+        // OpenAI-compatible: strip a pasted /chat/completions so we can re-add it.
+        $base = (string) preg_replace('#/chat/completions$#i', '', $base);
+        $base = rtrim($base, '/');
+        return $base . ($kind === 'models' ? '/models' : '/chat/completions');
+    }
+
+    /**
      * One chat/completion call. Returns the assistant text.
      * @param array<int,array{role:string,content:string}> $messages
      * @throws \RuntimeException with an admin-safe message on failure
@@ -105,7 +129,7 @@ final class Ai
             if ($system !== '') {
                 $payload['system'] = $system;
             }
-            $res = self::http('POST', $c['base_url'] . '/v1/messages', [
+            $res = self::http('POST', self::endpoint($c['base_url'], 'anthropic', 'chat'), [
                 'Content-Type: application/json',
                 'x-api-key: ' . $c['api_key'],
                 'anthropic-version: 2023-06-01',
@@ -125,7 +149,7 @@ final class Ai
 
         // OpenAI-compatible
         $payload = ['model' => $c['model'], 'messages' => $messages, 'temperature' => $temperature, 'max_tokens' => $maxTokens];
-        $res = self::http('POST', $c['base_url'] . '/chat/completions', [
+        $res = self::http('POST', self::endpoint($c['base_url'], 'openai', 'chat'), [
             'Content-Type: application/json',
             'Authorization: Bearer ' . $c['api_key'],
         ], (string) json_encode($payload));
@@ -176,9 +200,9 @@ final class Ai
             return [];
         }
         if ($c['format'] === 'anthropic') {
-            $res = self::http('GET', $c['base_url'] . '/v1/models', ['x-api-key: ' . $c['api_key'], 'anthropic-version: 2023-06-01'], null, 30);
+            $res = self::http('GET', self::endpoint($c['base_url'], 'anthropic', 'models'), ['x-api-key: ' . $c['api_key'], 'anthropic-version: 2023-06-01'], null, 30);
         } else {
-            $res = self::http('GET', $c['base_url'] . '/models', ['Authorization: Bearer ' . $c['api_key']], null, 30);
+            $res = self::http('GET', self::endpoint($c['base_url'], 'openai', 'models'), ['Authorization: Bearer ' . $c['api_key']], null, 30);
         }
         $data = json_decode($res['body'], true);
         if (!is_array($data)) {
