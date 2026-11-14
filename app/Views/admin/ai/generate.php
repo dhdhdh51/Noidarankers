@@ -1,6 +1,9 @@
 <?php
 /** @var bool $configured @var bool $enabled @var bool $imageOn @var array<int,array{id:int,name:string}>|array<string,string> $categories @var array<string,string> $tones */
 ?>
+<div class="btn-row" style="margin-bottom:1rem">
+  <a class="btn btn-outline btn-sm" href="<?= e(url('/admin/ai/settings')) ?>"><?= icon('gear') ?> API &amp; model settings</a>
+</div>
 <?php if (!$configured): ?>
 <div class="alert alert-error" role="alert">
   AI is not set up yet. <a href="<?= e(url('/admin/ai/settings')) ?>">Add your provider link, API key and model →</a>
@@ -57,10 +60,12 @@
       <div class="field">
         <label for="f-length">Length</label>
         <select id="f-length" name="length">
+          <option value="auto" selected>Auto — let the AI decide (recommended)</option>
           <option value="short">Short (~600 words)</option>
-          <option value="medium" selected>Medium (~1000 words)</option>
+          <option value="medium">Medium (~1000 words)</option>
           <option value="long">Long (~1600 words)</option>
         </select>
+        <p class="hint">Auto picks the best depth for your topic.</p>
       </div>
       <?php if ($imageOn): ?>
       <div class="field" style="grid-column:1/-1">

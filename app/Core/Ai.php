@@ -209,8 +209,11 @@ final class Ai
         $keywords = trim((string) ($input['keywords'] ?? ''));
         $sourceUrl = trim((string) ($input['url'] ?? ''));
         $tone = trim((string) ($input['tone'] ?? 'professional, helpful'));
-        $words = (int) ($input['words'] ?? 900);
-        $words = max(400, min(2200, $words));
+        $words = (int) ($input['words'] ?? 0);
+        $autoLength = $words <= 0;
+        if (!$autoLength) {
+            $words = max(400, min(2200, $words));
+        }
 
         $research = '';
         if ($sourceUrl !== '') {
@@ -241,7 +244,11 @@ final class Ai
         if ($research !== '') {
             $user .= "\nSOURCE MATERIAL FOR RESEARCH (rewrite in your own words, do NOT copy, do not mention that you were given this):\n\"\"\"\n" . mb_substr($research, 0, 6000) . "\n\"\"\"\n";
         }
-        $user .= "\nLENGTH: about {$words} words.\n";
+        if ($autoLength) {
+            $user .= "\nLENGTH: Decide the ideal length yourself from the topic and search intent. Cover it thoroughly and go in-depth (usually 900-1600 words, longer only if the topic genuinely needs it). Never pad or repeat just to reach a number.\n";
+        } else {
+            $user .= "\nLENGTH: about {$words} words.\n";
+        }
         $user .= "FORMAT the body as clean HTML using only these tags: <p>, <h2>, <h3>, <ul>, <ol>, <li>, <strong>, <em>, <a>, <blockquote>, <table>, <thead>, <tbody>, <tr>, <th>, <td>, <figure>, <figcaption>. Do NOT include <h1>, <html>, <head>, <style> or <script>. Start the body with an engaging intro paragraph (no heading).\n";
         if ($linkList !== '') {
             $user .= "\nINTERNAL LINKS — naturally link 2 to 4 relevant phrases in the body to these existing pages using <a href=\"RELATIVE_URL\">anchor</a> (use the exact relative URLs given):\n{$linkList}";

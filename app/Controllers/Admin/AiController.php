@@ -56,8 +56,8 @@ final class AiController extends AdminController
             redirect(url('/admin/ai'));
         }
 
-        $lengthKey = Request::input('length', 'medium');
-        $words = self::LENGTHS[$lengthKey] ?? 1000;
+        $lengthKey = Request::input('length', 'auto');
+        $words = self::LENGTHS[$lengthKey] ?? 0; // 0 => auto: the AI chooses the ideal length
         $categoryId = (int) Request::input('category_id');
         $makeImage = Request::input('make_image') === '1';
 
